@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.vscode/
+.env
+__pycache__/
+    admin/__pycache__/
+    barbeiro/__pycache__/
+    cliente/__pycache__/
+    database/models/__pycache__/
+    database/models/tabelas.py
