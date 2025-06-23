@@ -54,9 +54,9 @@ session=Session()
 
 
 
-novo_cliente = Cliente(nome='teste',cpf='1',telefone='123456',email='1')
-session.add(novo_cliente)
-session.commit()
+# novo_cliente = Cliente(nome='teste',cpf='1',telefone='123456',email='1')
+# session.add(novo_cliente)
+# session.commit()
 
 # novo_servico = Servico(
 #         tipo_servico='Corte Cabelo',

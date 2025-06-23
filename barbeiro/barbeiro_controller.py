@@ -30,13 +30,13 @@ def menu_barbeiro(barbeiro):
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
-            print("⚙️ Em construção: Agendar serviço")
+            print(" Em construção: Agendar serviço")
         elif opcao == "2":
-            print("📅 Em construção: Ver agendamentos")
+            print(" Em construção: Ver agendamentos")
         elif opcao == "3":
-            print("✏️ Em construção: Remover Horarios")
+            print(" Em construção: Remover Horarios")
         elif opcao == "0":
-            print("👋 Saindo do menu do barbeiro...")
+            print(" Saindo do menu do barbeiro...")
             break
         else:
             print("❌ Opção inválida. Tente novamente.")
