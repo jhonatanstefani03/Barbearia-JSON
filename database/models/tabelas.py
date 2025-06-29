@@ -7,7 +7,7 @@ from sqlalchemy.orm import  sessionmaker
 
 
 
-engine = create_engine("mysql+pymysql://root:root@localhost:3306/barbearia")
+engine = create_engine("mysql+pymysql://root:935030@localhost:3306/barbearia")
 Base= declarative_base()
 
 class Cliente(Base):
