@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column,Integer,String,Float,ForeignKey,Date,Time
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import  sessionmaker
-
+from sqlalchemy.orm import relationship
 
 
 
@@ -46,6 +46,9 @@ class Agendamento(Base):
     data_agendamento=Column(Date, nullable=False)
     hora_agendamento=Column(Time, nullable=False)
 
+    cliente = relationship('Cliente')
+    barbeiro = relationship('Barbeiro')
+    servico = relationship('Servico')
 
 
 Base.metadata.create_all(engine)

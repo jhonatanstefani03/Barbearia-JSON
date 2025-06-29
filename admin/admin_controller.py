@@ -1,4 +1,4 @@
-from database.models.tabelas import Cliente,Barbeiro, session
+from database.models.tabelas import Cliente,Barbeiro,Agendamento, session
 
 
 def login_admin():
@@ -12,6 +12,8 @@ def login_admin():
         print("[5] Agendar cliente")
         print("[6] Remover agendamento")
         print('[7] Atendimentos Realizados')
+        print('[8] Atendimentos do dia')
+        print('[0] sair do sistema')
 
         escolha =  input('digite a opçãpo desejada: ')
 
@@ -31,6 +33,10 @@ def login_admin():
                 remover_agendamento()
             case '7':
                 agendamento_realizados()
+            case '8':
+                agendamento_dia()
+            case '0':
+                break
             case __:
                 print('opçap  invalida!')
             
@@ -91,7 +97,34 @@ def agendar_cliente():
     pass
 
 def remover_agendamento():
-    pass
+    cpf = input('qual cpf do cliente que deseja remover? ')
+    data=  input('qual da data? ')
+    cliente = session.query(Cliente).filter_by(cpf=cpf).first()
+    if cliente:
+        agendamento= session.query(Agendamento).filter_by(cliente_id=cliente.id, data_agendamento=data).first()
+
+        if agendamento:
+            session.delete(agendamento)
+            session.commit()
+            print(f'agendamento  de {cliente.id} do dia{data} removido com  sucesso!')
+    else:
+        print('agendamento nao encontrado')
+
 
 def agendamento_realizados():
-    pass
+    agendamentos =  session.query(Agendamento).all()
+    for i, ag in enumerate(agendamentos, start=1):
+        print(f'{i}-{ag.cliente.nome}|barbeiro:{ag.barbeiro.nome} data:{ag.data_agendamento}|{ag.hora_agendamento}')
+    print(f'total  de agendamentos ={len(agendamentos)}')
+
+
+def agendamento_dia():
+    data = input(' digite a data dos agendamento (YYYY-MM-DD): ')
+    agendamentos = session.query(Agendamento).filter_by(data_agendamento=data).all()
+    
+    if agendamentos:
+        for i, ag in enumerate(agendamentos, start=1):
+            print(f"{i}) Cliente: {ag.cliente.nome} | Barbeiro: {ag.barbeiro.nome} | Serviço: {ag.servico.tipo_servico} | Hora: {ag.hora_agendamento}")
+        print(f'total do  dia: {len(agendamentos)}')
+    else:
+        print('Nenhum agendamento encontrado para essa data.')
