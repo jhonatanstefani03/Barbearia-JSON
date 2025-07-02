@@ -73,12 +73,21 @@ def agendar_cliente(cliente):
         return
 
     try:
+
+
         data_str = input('Digite a data do agendamento (YYYY-MM-DD): ')
         data = datetime.strptime(data_str, '%Y-%m-%d').date()
+
+        data_agendadas = session.query(Agendamento).filter_by(data_agendamento=data_str).all()
+        if data_agendadas:
+            print('Já possui agendamento para esta data!')
+            return
 
         if data < date.today():
             print('❌ Não é possível agendar para uma data no passado.')
             return
+
+
     
     except ValueError:
         print('❌ Data inválida.')
