@@ -11,3 +11,4 @@ __pycache__/
     cliente/__pycache__/
     database/models/__pycache__/
     database/models/tabelas.py
+.idea/
