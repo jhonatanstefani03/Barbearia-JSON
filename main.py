@@ -2,6 +2,7 @@ from admin.admin_controller import login_admin
 from cliente.cliente_controller import login_cliente
 from barbeiro.barbeiro_controller import login_barbeiro
 
+
 def linha(tam=30):
     print('-' * tam)
 
