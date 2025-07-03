@@ -22,6 +22,7 @@ def login_admin():
         print("[6] Remover agendamento")
         print('[7] Atendimentos Realizados')
         print('[8] Atendimentos do dia')
+        print('[9] Criar serviços')
         print('[0] sair do sistema')
 
         escolha =  input('digite a opção desejada: ')
@@ -44,6 +45,8 @@ def login_admin():
                 agendamento_realizados()
             case '8':
                 agendamento_dia()
+            case '9':
+                criar_servico()
             case '0':
                 break
             case __:
@@ -231,3 +234,18 @@ def agendamento_dia():
         print(f'total do  dia: {len(agendamentos)}')
     else:
         print('Nenhum agendamento encontrado para essa data.')
+
+
+def criar_servico():
+    nome=input('qual tipo  de serviço: ')
+    preco = float(input('digite o preço do  serviço Ex(39.90): '))
+    duracao = int(input('digite o  tempo  do serviço em minutos: '))
+    novo_servico = Servico(
+    tipo_servico=nome,
+    duracao=duracao,
+    preco=preco)
+
+    session.add(novo_servico)
+    session.commit()
+    print(f'Serviço-{nome} add com sucesso!')
+    return
