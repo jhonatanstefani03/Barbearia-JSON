@@ -57,7 +57,7 @@ def ver_agendamentos(cliente):
 
     print("Aqui estão seus próximos agendamentos:")
     for agendamento in agendamentos_do_cliente:
-        print(f" -Serviço:{agendamento.servico} Data: {agendamento.data_hora}")
+        print(f" -Serviço:{agendamento.servico.tipo_servico} Data: {agendamento.data_agendamento} Hora-{agendamento.hora_agendamento}")
 
 
 def editar_dados(cliente):
@@ -105,7 +105,7 @@ def editar_dados(cliente):
 def agendar_cliente(cliente):
     servicos = session.query(Servico).all()
     barbeiros = session.query(Barbeiro).all()
-
+   
     print("\n📋 Serviços disponíveis:")
     for s in servicos:
         print(f'{s.id} - {s.tipo_servico} | R${s.preco} | {s.duracao} min')
@@ -131,9 +131,16 @@ def agendar_cliente(cliente):
     try:
         data_str = input('Digite a data do agendamento (YYYY-MM-DD): ')
         data = datetime.strptime(data_str, '%Y-%m-%d').date()
-
+  
+        
         if data < data.today():
             print('❌ Não é possível agendar para uma data no passado.')
+            return
+        
+        agendamento_existente = session.query(Agendamento).filter_by(cliente_id=cliente.id, data_agendamento=data).first()
+
+        if agendamento_existente:
+            print('⚠️ Você já possui um agendamento para esta data!\nFavor selecionar outra data ou alterar o agendamento existente.')
             return
 
     except ValueError:

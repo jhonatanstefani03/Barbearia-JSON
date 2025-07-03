@@ -3,7 +3,15 @@ from datetime import*
 
 
 def login_admin():
-    print("Login funcionando!")
+    print('Informe o login e senha:\n')
+    usuario = input("Usuário: ")
+    senha = input("Senha: ")
+
+    if usuario != "admin" or senha != "1234":
+        print("Usuário ou senha incorretos!")
+
+    print("✅ Login realizado com sucesso!")
+
     while True:
         print("\n--- MENU DO ADMIN  ---")
         print("[1] Cadastrar Cliente")
@@ -16,7 +24,7 @@ def login_admin():
         print('[8] Atendimentos do dia')
         print('[0] sair do sistema')
 
-        escolha =  input('digite a opçãpo desejada: ')
+        escolha =  input('digite a opção desejada: ')
 
         match escolha:
 
@@ -39,7 +47,7 @@ def login_admin():
             case '0':
                 break
             case __:
-                print('opçap  invalida!')
+                print('opção  invalida!')
             
 
 #####################################################################

@@ -1,8 +1,9 @@
 from database.models.tabelas import Agendamento, Servico
 from datetime import datetime, timedelta, time
 from database.models import tabelas
-from sqlalchemy.orm import  session
+from  database.models.tabelas import session
 from cliente.cliente_controller import *
+
 
 def gerar_horarios_disponiveis(barbeiro_id, data, duracao_servico):
     # Definir horário de trabalho
