@@ -1,8 +1,7 @@
-from agendamentos import agendamentos
-from database.models.tabelas import session
-from database.models.tabelas import Cliente, Servico, Barbeiro, Agendamento
+from models.tabelas import session
+from models.tabelas import Cliente, Servico, Barbeiro, Agendamento,session
 from datetime import *
-from  agendamentos.agendamentos import gerar_horarios_disponiveis
+from  controllers.agendamentos import gerar_horarios_disponiveis
 
 
 
@@ -186,3 +185,4 @@ def agendar_cliente(cliente):
     print('✅ Agendamento realizado com sucesso!')
     print(
         f'🗓️ {data} às ⏰ {hora_escolhida.strftime("%H:%M")} com {barbeiro_escolhido.nome} para {servico_escolhido.tipo_servico}')
+    

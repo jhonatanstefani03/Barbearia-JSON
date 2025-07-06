@@ -1,4 +1,4 @@
-from database.models.tabelas import Cliente,Barbeiro,Agendamento,Servico, session
+from models.tabelas import Cliente,Barbeiro,Agendamento,Servico, session
 from datetime import*
 
 
@@ -9,6 +9,7 @@ def login_admin():
 
     if usuario != "admin" or senha != "1234":
         print("Usuário ou senha incorretos!")
+        return
 
     print("✅ Login realizado com sucesso!")
 
@@ -56,10 +57,31 @@ def login_admin():
 #####################################################################
 
 def cadastrar_cliente():
-    nome = input('digite o nome do cliente: ')
-    cpf = input('digite o cpf do cliente: ')
-    telefone =  input('digite o telefone: ')
-    email= input('digite o email: ')
+    while True:
+        nome = input('Digite o nome do cliente: ').strip()
+        if nome.replace(' ', '').isalpha():
+            break
+        print('Nome inválido! Use apenas letras e espaços.')
+
+    while True:
+        try:
+            cpf = int(input('Digite o CPF do cliente (apenas números): ').strip())
+            break
+        except ValueError:
+            print('CPF inválido! Digite apenas números.')
+
+    while True:
+        try:
+            telefone = int(input('Digite o telefone do cliente (apenas números): ').strip())
+            break
+        except ValueError:
+            print('Telefone inválido! Digite apenas números.')
+
+    while True:
+        email = input('Digite o email do cliente: ').strip()
+        if "@" in email:
+            break
+        print('Email inválido! Deve conter "@".')
     
     cliente_existente =  session.query(Cliente).filter_by(cpf=cpf).first()
     if cliente_existente:
@@ -112,7 +134,7 @@ def remover_barbeiro():
 
 
 def agendar_cliente():
-    from  agendamentos.agendamentos import gerar_horarios_disponiveis
+    from  controllers.agendamentos import gerar_horarios_disponiveis
     clientes =  session.query(Cliente).all()
     servicos = session.query(Servico).all()
     barbeiros = session.query(Barbeiro).all()
