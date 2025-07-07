@@ -1,9 +1,18 @@
-from database.models.tabelas import Cliente,Barbeiro,Agendamento,Servico, session
+from models.tabelas import Cliente,Barbeiro,Agendamento,Servico, session
 from datetime import*
 
 
 def login_admin():
-    print("Login funcionando!")
+    print('Informe o login e senha:\n')
+    usuario = input("Usuário: ")
+    senha = input("Senha: ")
+
+    if usuario != "admin" or senha != "1234":
+        print("Usuário ou senha incorretos!")
+        return
+
+    print("✅ Login realizado com sucesso!")
+
     while True:
         print("\n--- MENU DO ADMIN  ---")
         print("[1] Cadastrar Cliente")
@@ -14,9 +23,10 @@ def login_admin():
         print("[6] Remover agendamento")
         print('[7] Atendimentos Realizados')
         print('[8] Atendimentos do dia')
+        print('[9] Criar serviços')
         print('[0] sair do sistema')
 
-        escolha =  input('digite a opçãpo desejada: ')
+        escolha =  input('digite a opção desejada: ')
 
         match escolha:
 
@@ -36,19 +46,42 @@ def login_admin():
                 agendamento_realizados()
             case '8':
                 agendamento_dia()
+            case '9':
+                criar_servico()
             case '0':
                 break
             case __:
-                print('opçap  invalida!')
+                print('opção  invalida!')
             
 
 #####################################################################
 
 def cadastrar_cliente():
-    nome = input('digite o nome do cliente: ')
-    cpf = input('digite o cpf do cliente: ')
-    telefone =  input('digite o telefone: ')
-    email= input('digite o email: ')
+    while True:
+        nome = input('Digite o nome do cliente: ').strip()
+        if nome.replace(' ', '').isalpha():
+            break
+        print('Nome inválido! Use apenas letras e espaços.')
+
+    while True:
+        try:
+            cpf = int(input('Digite o CPF do cliente (apenas números): ').strip())
+            break
+        except ValueError:
+            print('CPF inválido! Digite apenas números.')
+
+    while True:
+        try:
+            telefone = int(input('Digite o telefone do cliente (apenas números): ').strip())
+            break
+        except ValueError:
+            print('Telefone inválido! Digite apenas números.')
+
+    while True:
+        email = input('Digite o email do cliente: ').strip()
+        if "@" in email:
+            break
+        print('Email inválido! Deve conter "@".')
     
     cliente_existente =  session.query(Cliente).filter_by(cpf=cpf).first()
     if cliente_existente:
@@ -101,7 +134,7 @@ def remover_barbeiro():
 
 
 def agendar_cliente():
-    from  agendamentos.agendamentos import gerar_horarios_disponiveis
+    from  controllers.agendamentos import gerar_horarios_disponiveis
     clientes =  session.query(Cliente).all()
     servicos = session.query(Servico).all()
     barbeiros = session.query(Barbeiro).all()
@@ -223,3 +256,18 @@ def agendamento_dia():
         print(f'total do  dia: {len(agendamentos)}')
     else:
         print('Nenhum agendamento encontrado para essa data.')
+
+
+def criar_servico():
+    nome=input('qual tipo  de serviço: ')
+    preco = float(input('digite o preço do  serviço Ex(39.90): '))
+    duracao = int(input('digite o  tempo  do serviço em minutos: '))
+    novo_servico = Servico(
+    tipo_servico=nome,
+    duracao=duracao,
+    preco=preco)
+
+    session.add(novo_servico)
+    session.commit()
+    print(f'Serviço-{nome} add com sucesso!')
+    return

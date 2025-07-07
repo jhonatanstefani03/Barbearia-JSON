@@ -1,24 +1,20 @@
-
-from database.models.tabelas import session
-from database.models.tabelas import Cliente,Servico,Barbeiro,Agendamento
+from models.tabelas import session
+from models.tabelas import Cliente, Servico, Barbeiro, Agendamento,session
 from datetime import *
-from  agendamentos.agendamentos import gerar_horarios_disponiveis
-
-
+from  controllers.agendamentos import gerar_horarios_disponiveis
 
 
 
 def login_cliente():
-    cpf =input('digite o seu cpf: ')
-    email= input('digite o seu email: ')
-    
+    cpf = input('digite o seu cpf: ')
+    email = input('digite o seu email: ')
 
     cliente = session.query(Cliente).filter_by(cpf=cpf, email=email).first()
 
     if cliente:
         print(f"✅ Bem-vindo, {cliente.nome}!")
         menu_cliente(cliente)
-        
+
     else:
         print("❌ CPF ou e-mail incorretos. Tente novamente.")
         return None
@@ -37,19 +33,78 @@ def menu_cliente(cliente):
         if opcao == "1":
             agendar_cliente(cliente)
         elif opcao == "2":
-            print("📅 Em construção: Ver agendamentos")
+            ver_agendamentos(cliente)
         elif opcao == "3":
-            print("✏️ Em construção: Editar dados")
+            editar_dados(cliente)
         elif opcao == "0":
             print("👋 Saindo do menu do cliente...")
             break
         else:
             print("❌ Opção inválida. Tente novamente.")
 
+
+
+
+
+def ver_agendamentos(cliente):
+    agendamentos_do_cliente = session.query(Agendamento).filter_by(cliente_id=cliente.id).order_by(
+        Agendamento.data_agendamento, Agendamento.hora_agendamento).all()
+
+    if not agendamentos_do_cliente:
+        print("📭 Você ainda não possui nenhum agendamento marcado.")
+        return
+
+    print("Aqui estão seus próximos agendamentos:")
+    for agendamento in agendamentos_do_cliente:
+        print(f" -Serviço:{agendamento.servico.tipo_servico} Data: {agendamento.data_agendamento} Hora-{agendamento.hora_agendamento}")
+
+
+def editar_dados(cliente):
+    while True:
+        print("\nQual informação você gostaria de editar?")
+        print("[1] Nome")
+        print("[2] e-mail")
+        print("[3] cpf")
+        print("[4] senha")
+        print("[0] Voltar ao Menu anterior")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            novo_nome = input("Digite o novo nome: ")
+            cliente.nome = novo_nome
+            session.commit()
+            print("Nome atualizado com sucesso!")
+        elif opcao == "2":
+            novo_email = input("Digite o novo email: ")
+            cliente.email = novo_email
+            session.commit()
+            print("Email atualizado com sucesso!")
+        elif opcao == "3":
+            novo_cpf = input("Digite o novo cpf: ")
+            cliente.cpf = novo_cpf
+            session.commit()
+            print("CPF atualizado com sucesso!")
+        elif opcao == "4":
+            novo_senha = input("Digite a nova senha: ")
+            cliente.senha = novo_senha
+            session.commit()
+            print("Senha atualizada com sucesso!")
+        elif opcao == "0":
+            print("Retornando ao menu do cliente...")
+            return
+        else:
+            print("Opção inválida!Tente novamente.")
+
+        # continuar = input("Deseja editar mais alguma coisa? [S/N]: ").lower()
+        # if continuar != "S":
+        # break
+
+
 def agendar_cliente(cliente):
     servicos = session.query(Servico).all()
     barbeiros = session.query(Barbeiro).all()
-
+   
     print("\n📋 Serviços disponíveis:")
     for s in servicos:
         print(f'{s.id} - {s.tipo_servico} | R${s.preco} | {s.duracao} min')
@@ -73,22 +128,20 @@ def agendar_cliente(cliente):
         return
 
     try:
-
-
         data_str = input('Digite a data do agendamento (YYYY-MM-DD): ')
         data = datetime.strptime(data_str, '%Y-%m-%d').date()
-
-        data_agendadas = session.query(Agendamento).filter_by(data_agendamento=data_str).all()
-        if data_agendadas:
-            print('Já possui agendamento para esta data!')
-            return
-
-        if data < date.today():
+  
+        
+        if data < data.today():
             print('❌ Não é possível agendar para uma data no passado.')
             return
+        
+        agendamento_existente = session.query(Agendamento).filter_by(cliente_id=cliente.id, data_agendamento=data).first()
 
+        if agendamento_existente:
+            print('⚠️ Você já possui um agendamento para esta data!\nFavor selecionar outra data ou alterar o agendamento existente.')
+            return
 
-    
     except ValueError:
         print('❌ Data inválida.')
         return
@@ -130,5 +183,6 @@ def agendar_cliente(cliente):
     session.commit()
 
     print('✅ Agendamento realizado com sucesso!')
-    print(f'🗓️ {data} às ⏰ {hora_escolhida.strftime("%H:%M")} com {barbeiro_escolhido.nome} para {servico_escolhido.tipo_servico}')
+    print(
+        f'🗓️ {data} às ⏰ {hora_escolhida.strftime("%H:%M")} com {barbeiro_escolhido.nome} para {servico_escolhido.tipo_servico}')
     
