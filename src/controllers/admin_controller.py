@@ -43,7 +43,7 @@ def login_admin():
             case '6':
                 remover_agendamento()
             case '7':
-                agendamento_realizados()
+                print(agendamento_realizados())
             case '8':
                 agendamento_dia()
             case '9':
@@ -243,7 +243,7 @@ def agendamento_realizados():
     agendamentos =  session.query(Agendamento).all()
     for i, ag in enumerate(agendamentos, start=1):
         print(f'{i}-{ag.cliente.nome}|barbeiro:{ag.barbeiro.nome} data:{ag.data_agendamento}|{ag.hora_agendamento}')
-    print(f'total  de agendamentos ={len(agendamentos)}')
+    return f'total  de agendamentos ={len(agendamentos)}'
 
 
 def agendamento_dia():
