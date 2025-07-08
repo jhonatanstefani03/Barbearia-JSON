@@ -117,19 +117,34 @@ def cadastrar_barbeiro():
     cpf = input('digite o  cpf : ')
     telefone = input('digite o  telefone: ')
     email =input('digite o  email : ')
-    novo_barbeiro = Barbeiro(nome=nome,cpf=cpf,telefon=telefone,email=email)
+    novo_barbeiro = Barbeiro(nome=nome,cpf=cpf,telefone=telefone,email=email)
     session.add(novo_barbeiro)
     session.commit()
 
 def remover_barbeiro():
-    cpf = input('digite o cpf  do barbeiro que deseja remover: ')
-    barbeiro =  session.query(Barbeiro).filter_by(cpf=cpf).first()
-    if barbeiro:
-        session.delete(barbeiro)
-        session.commit()
-        print(f'barbeiro {barbeiro.nome} deletado com sucesso!')
-    else:
-        print('barbeiro nao  encontrado ou  nao cadastrado!')
+    barbeiros = session.query(Barbeiro).all()
+    for barbeiro in barbeiros:
+        print(f'{barbeiro.nome} cpf:{barbeiro.cpf}')
+    cpf = input('digite o cpf do  cliente  que deseja remover: ').strip()
+
+    barbeiro = session.query(Barbeiro).filter_by(cpf=cpf).first()
+    try:
+        if barbeiro:
+            session.delete(barbeiro)
+            session.commit()
+            print(f'Cliente {barbeiro.nome} removido com  sucesso!')
+        else:
+            print('cliente nao encontrado')
+    except Exception:
+        print('algo deu errado!')
+    #cpf = input('digite o cpf  do barbeiro que deseja remover: ')
+    #barbeiro =  session.query(Barbeiro).filter_by(cpf=cpf).first()
+    #if barbeiro:
+    #    session.delete(barbeiro)
+    #    session.commit()
+    #    print(f'barbeiro {barbeiro.nome} deletado com sucesso!')
+    #else:
+    #    print('barbeiro nao  encontrado ou  nao cadastrado!')
 
 
 
