@@ -1,6 +1,6 @@
-from models.tabelas import Agendamento, Servico,session
+from src.models.tabelas import Agendamento, Servico,session
 from datetime import datetime, timedelta, time
-from controllers.cliente_controller import *
+from src.controllers.cliente_controller import *
 
 
 def gerar_horarios_disponiveis(barbeiro_id, data, duracao_servico):

@@ -1,6 +1,6 @@
 
-from models.tabelas import Barbeiro,Cliente,Servico, Agendamento,session
-from controllers.agendamentos import gerar_horarios_disponiveis
+from src.models.tabelas import Barbeiro,Cliente,Servico, Agendamento,session
+from src.controllers.agendamentos import gerar_horarios_disponiveis
 from datetime import datetime, date
 
 

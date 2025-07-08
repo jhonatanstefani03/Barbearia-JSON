@@ -1,4 +1,4 @@
-from models.tabelas import Cliente,Barbeiro,Agendamento,Servico, session
+from src.models.tabelas import Cliente,Barbeiro,Agendamento,Servico, session
 from datetime import*
 
 
@@ -134,7 +134,7 @@ def remover_barbeiro():
 
 
 def agendar_cliente():
-    from  controllers.agendamentos import gerar_horarios_disponiveis
+    from  src.controllers.agendamentos import gerar_horarios_disponiveis
     clientes =  session.query(Cliente).all()
     servicos = session.query(Servico).all()
     barbeiros = session.query(Barbeiro).all()

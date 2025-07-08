@@ -3,8 +3,15 @@ from sqlalchemy import Column,Integer,String,Float,ForeignKey,Date,Time
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import  sessionmaker
 from sqlalchemy.orm import relationship
+from dotenv import load_dotenv
+import os
 
-engine = create_engine("mysql+pymysql://root:root@localhost:3306/barbearia")
+load_dotenv()
+USUARIO = os.getenv("USUARIO")
+SENHA = os.getenv("SENHA")
+
+
+engine = create_engine(f"mysql+pymysql://{USUARIO}:{SENHA}@localhost:3306/barbearia")
 Base= declarative_base()
 
 class Cliente(Base):
