@@ -117,9 +117,10 @@ def cadastrar_barbeiro():
     cpf = input('digite o  cpf : ')
     telefone = input('digite o  telefone: ')
     email =input('digite o  email : ')
-    novo_barbeiro = Barbeiro(nome=nome,cpf=cpf,telefon=telefone,email=email)
+    novo_barbeiro = Barbeiro(nome=nome,cpf=cpf,telefone=telefone,email=email)
     session.add(novo_barbeiro)
     session.commit()
+    print(f'Barbeiro {nome} cadastrado com sucesso! ')
 
 def remover_barbeiro():
     cpf = input('digite o cpf  do barbeiro que deseja remover: ')

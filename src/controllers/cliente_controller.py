@@ -75,16 +75,19 @@ def editar_dados(cliente):
             cliente.nome = novo_nome
             session.commit()
             print("Nome atualizado com sucesso!")
+            print(f'Novo nome: {novo_nome}')
         elif opcao == "2":
             novo_email = input("Digite o novo email: ")
             cliente.email = novo_email
             session.commit()
             print("Email atualizado com sucesso!")
+            print(f'Novo email: {novo_email}')
         elif opcao == "3":
             novo_cpf = input("Digite o novo cpf: ")
             cliente.cpf = novo_cpf
             session.commit()
             print("CPF atualizado com sucesso!")
+            print(f'Novo cpf: {novo_cpf}')
         elif opcao == "4":
             novo_senha = input("Digite a nova senha: ")
             cliente.senha = novo_senha
