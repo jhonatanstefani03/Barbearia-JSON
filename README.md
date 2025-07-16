@@ -36,6 +36,6 @@ Crie um banco de dados.
 Execute os scripts SQL para criar as tabelas necessárias (clientes, funcionários, serviços e agendamentos)
 
 👨‍💻 Autor
-Desenvolvido por Jhonatan, Márcio, Renato 🧠🚀
+Desenvolvido por Jhonatan, Márcio, Renato , Diogo🧠🚀
 
 ⭐ Se achar útil, não esqueça de deixar uma estrela no repositório!

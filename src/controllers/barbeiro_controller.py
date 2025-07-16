@@ -31,7 +31,7 @@ def menu_barbeiro(barbeiro):
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
-            print(" Em construção: Agendar serviço")
+            agendar_para_cliente(barbeiro)
         elif opcao == "2":
             ver_agendamentos_barbeiro(barbeiro)
         elif opcao == "3":
@@ -141,10 +141,11 @@ def remover_agendamento_barbeiro(barbeiro):
     try:
         escolha = int(input("Escolha o número do agendamento para remover: ")) - 1
         agendamento_escolhido = agendamentos[escolha]
+    
+
+        session.delete(agendamento_escolhido)
+        session.commit()
+        print("✅ Agendamento removido com sucesso.")
     except (IndexError, ValueError):
         print("❌ Escolha inválida.")
         return
-
-    session.delete(agendamento_escolhido)
-    session.commit()
-    print("✅ Agendamento removido com sucesso.")

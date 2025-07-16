@@ -24,6 +24,7 @@ def login_admin():
         print('[7] Atendimentos Realizados')
         print('[8] Atendimentos do dia')
         print('[9] Criar serviços')
+        print('[10] Ver Clientes')
         print('[0] sair do sistema')
 
         escolha =  input('digite a opção desejada: ')
@@ -48,6 +49,9 @@ def login_admin():
                 agendamento_dia()
             case '9':
                 criar_servico()
+
+            case '10':
+                ver_clientes()
             case '0':
                 break
             case __:
@@ -227,7 +231,7 @@ def agendar_cliente():
 
 def remover_agendamento():
     cpf = input('qual cpf do cliente que deseja remover? ')
-    data=  input('qual da data? ')
+    data=  input('qual da data?(YYYY-MM-DD): ')
     cliente = session.query(Cliente).filter_by(cpf=cpf).first()
     if cliente:
         agendamento= session.query(Agendamento).filter_by(cliente_id=cliente.id, data_agendamento=data).first()
@@ -248,15 +252,42 @@ def agendamento_realizados():
 
 
 def agendamento_dia():
-    data = input(' digite a data dos agendamento (YYYY-MM-DD): ')
+    data = input('Digite a data dos agendamentos (YYYY-MM-DD): ')
+    try:
+        
+        data = datetime.strptime(data, "%Y-%m-%d").date()
+    except ValueError:
+        print("Formato de data inválido! Use o padrão YYYY-MM-DD (ex: 2025-07-16).")
+        return
     agendamentos = session.query(Agendamento).filter_by(data_agendamento=data).all()
     
     if agendamentos:
-        for i, ag in enumerate(agendamentos, start=1):
+       
+        hora_atual = datetime.now().time()
+
+        realizados = []
+        pendentes = []
+
+        for ag in agendamentos:
+            
+            if ag.hora_agendamento < hora_atual:
+                realizados.append(ag)
+            else:
+                pendentes.append(ag)
+
+        print("\n Agendamentos já realizados:")
+        for i, ag in enumerate(realizados, start=1):
             print(f"{i}) Cliente: {ag.cliente.nome} | Barbeiro: {ag.barbeiro.nome} | Serviço: {ag.servico.tipo_servico} | Hora: {ag.hora_agendamento}")
-        print(f'total do  dia: {len(agendamentos)}')
+
+        print("\n Agendamentos pendentes:")
+        for i, ag in enumerate(pendentes, start=1):
+            print(f"{i}) Cliente: {ag.cliente.nome} | Barbeiro: {ag.barbeiro.nome} | Serviço: {ag.servico.tipo_servico} | Hora: {ag.hora_agendamento}")
+
+        print(f"\n Total do dia: {len(agendamentos)}")
+        print(f"Realizados: {len(realizados)} | Pendentes: {len(pendentes)}")
     else:
         print('Nenhum agendamento encontrado para essa data.')
+
 
 
 def criar_servico():
@@ -272,3 +303,14 @@ def criar_servico():
     session.commit()
     print(f'Serviço-{nome} add com sucesso!')
     return
+
+def ver_clientes():
+    clientes =session.query(Cliente).all()
+
+    if clientes:
+        for i, c in enumerate(clientes, start=1):
+            print(f"{i}) Cliente: {c.nome}-cpf:{c.cpf} email:{c.email}")
+        return print(f'total do  dia: {len(clientes)}')
+    else:
+        print('nenhum  cliente cadastrado')
+        

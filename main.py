@@ -1,6 +1,6 @@
-from controllers.admin_controller import login_admin
-from controllers.cliente_controller import login_cliente
-from controllers.barbeiro_controller import login_barbeiro
+from src.controllers.admin_controller import login_admin
+from src.controllers.cliente_controller import login_cliente
+from src.controllers.barbeiro_controller import login_barbeiro
 
 
 def linha(tam=30):
