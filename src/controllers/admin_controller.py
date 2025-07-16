@@ -239,7 +239,7 @@ def remover_agendamento():
         if agendamento:
             session.delete(agendamento)
             session.commit()
-            print(f'agendamento  de {cliente.id} do dia{data} removido com  sucesso!')
+            print(f'agendamento  de {cliente.nome} do dia {data} removido com  sucesso!')
     else:
         print('agendamento nao encontrado')
 
